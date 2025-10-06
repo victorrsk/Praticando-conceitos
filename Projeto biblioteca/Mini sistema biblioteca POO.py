@@ -54,20 +54,28 @@ class Pessoa:
             return f'O livro "{livro.titulo}" foi devolvido'
         
         return f'O livro "{livro.titulo}" já está disponível'
-
-
+    
+    @property
+    def livros_emprestados(self):
+        return self._livros_emprestados
+    
+    
 # livros
 One_Piece = Livro('One Piece', 'Oda')
 Dom_Casmurro = Livro('Dom Casmurro', 'Machado de Assis')
 A_Metamorfose = Livro('A Metamorfose', 'Franz Kafka')
 
-# testando disponibilidade antes de emprestar
-print(One_Piece.disponivel)
 
+# objeto pessoa
 Victor = Pessoa('Victor')
-print(Victor.emprestar_livro(One_Piece))
 
-# testando disponibilidade depos de emprestar
-print(One_Piece.disponivel)
-print(Victor.devolver_livro(One_Piece))
-print(One_Piece.disponivel)
+# testes
+print(f'O livro está disponivel?: {One_Piece.disponivel}')
+
+# emprestando o livro
+print(Victor.emprestar_livro(One_Piece))
+print(f'O livro está disponivel?: {One_Piece.disponivel}')
+
+# devolvendo o livro
+print(Victor.devolver_livro(Dom_Casmurro))
+print(Victor.livros_emprestados)
