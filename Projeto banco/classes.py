@@ -1,8 +1,13 @@
 from random import randint
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 
 # criacao da interface Transacao
 class Transacao(ABC):
+    
+    @property
+    @abstractproperty
+    def valor(self):
+        pass
     
     @abstractmethod
     def registrar(conta):
@@ -11,20 +16,32 @@ class Transacao(ABC):
 class Deposito(Transacao):
     
     def __init__(self, valor):
-        super().__init__()
         self.__valor = valor
         
-    def registrar(conta):
-        pass
+    @property
+    def valor(self):
+        return self.__valor
+        
+    def registrar(self, conta):
+        transacao_valida = conta.depositar(self.valor)
+        
+        if transacao_valida:
+            conta.historico.adicionar_transacao(self)
     
 class Saque(Transacao):
     
     def __init__(self, valor):
-        super().__init__()
         self.__valor = valor
         
-    def registrar(conta):
-        pass
+    @property
+    def valor(self):
+        return self.__valor
+        
+    def registrar(self, conta):
+        transacao_valida = conta.sacar(self.valor)
+        
+        if transacao_valida:
+            conta.historico.adicionar_transacao(self)
     
 class Cliente:
     
@@ -43,11 +60,15 @@ class Conta:
         self.__numero = randint(1000, 2000)
         self.__agencia = 'Banco Padrao'
         self.__cliente = cliente # obj da classe cliente
-        #self.__historico = Historico() # obj da classe cliente
+        self.__historico = Historico() # obj da classe cliente
     
     @property
     def saldo(self):
         return self.__saldo
+    
+    @property
+    def historico(self):
+        return self.__historico
     
     @classmethod
     def nova_conta(cls, cliente):
@@ -112,3 +133,30 @@ class ContaCorrente(Conta):
         except ValueError:
             print('O tipo informado é inválido')
             return False
+    
+    def depositar(self, valor):
+        
+        try:
+            valor = int(valor)
+            
+            if valor > 0:
+                return super().depositar(valor)
+            
+            else:
+                print('valor inválido')
+                
+            return False
+        
+        except ValueError:
+            print('O tipo informado é inválido')
+            return False
+              
+class Historico:
+    
+    def __init__(self):
+        self.__transacoes = []
+        
+    def adicionar_transacao(self, transacao):
+        self.__transacoes.append({'Tipo': transacao.__class__.__name__,
+                                  'Valor': transacao.valor,
+                                  'Data': 'desprezivel por agr'})

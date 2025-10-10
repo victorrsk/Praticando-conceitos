@@ -3,13 +3,10 @@ from classes import ContaCorrente
 
 carlos = ContaCorrente.nova_conta('teste')
 
-print(carlos.depositar(1000))
-print(carlos.sacar(900))
-
-
-
-
-
+carlos.depositar(5000)
+print(carlos.saldo)
+carlos.sacar(200)
+print(carlos.saldo)
 
 
 
