@@ -1,7 +1,7 @@
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 from random import choice
 
-# feito
+
 class Usuario:
     
     def __init__(self, nome, email):
@@ -15,13 +15,16 @@ class Usuario:
         return self.__email
     
     def assistir(self, conteudo):
+        # chama o método registrar de historico e salva o titulo do conteudo que foi assistido
         self.historico.registrar(conteudo)
+        # conteudo.reproduzir retorna que tal conteudo está sendo assistido
         return conteudo.reproduzir
     
     def adicionar_a_biblioteca(self, conteudo):
+        # adiciona o conteudo a biblioteca
         self.biblioteca.adicionar_conteudo(conteudo)
-
-       
+   
+      
 class Biblioteca:
     
     def __init__(self):
@@ -32,6 +35,7 @@ class Biblioteca:
         return self.__conteudos
         
     def adicionar_conteudo(self, conteudo):
+        # adiciona o titulo e duração do conteudo a lista de conteudos
         self.__conteudos.append(
             {
             'titulo': conteudo.titulo,
@@ -45,6 +49,8 @@ class Biblioteca:
 
 
 class Conteudo(ABC):
+    
+    # classe abstrata que define os atributos e métodos obrigatorios de suas subclasses
     
     def __init__(self, titulo, duracao, classificacao):
         super().__init__()
@@ -83,8 +89,13 @@ class Serie(Conteudo):
 class Historico:
     
     def __init__(self):
-        self.assistidos = []
-        
+        self.__assistidos = []
+    
+    @property
+    def assistidos(self):
+        # retorna a lista de conteudos assistidos
+        return self.__assistidos
+    
     def registrar(self, conteudo):
         self.assistidos.append(conteudo.titulo)
     
@@ -92,34 +103,42 @@ class Historico:
     def listar_historico(self):
         return [f'{indice+1}-{titulo}' for indice, titulo in enumerate(self.assistidos)]
     
-    
 
-# filmes teste
-filmes = [
-    Filme("O Grande Truque", 130, "Christopher Nolan", 14),
-    Filme("A Origem", 148, "Christopher Nolan", 14),
-    Filme("Gladiador", 155, "Ridley Scott", 16),
-    Filme("Forrest Gump", 142, "Robert Zemeckis", 12),
-    Filme("O Resgate do Soldado Ryan", 169, "Steven Spielberg", 16),
-    Filme("O Senhor dos Anéis: A Sociedade do Anel", 178, "Peter Jackson", 12),
-    Filme("O Poderoso Chefão", 175, "Francis Ford Coppola", 18),
-    Filme("Bastardos Inglórios", 153, "Quentin Tarantino", 18),
-    Filme("Matrix", 136, "Lana e Lilly Wachowski", 16),
-    Filme("O Lobo de Wall Street", 180, "Martin Scorsese", 18)
-]
+# ambas as funções abaixo retornam um objeto filme ou serie aleatorio a partir de uma lista com 10 filmes e series 
+# tais objetos são usados na main para assistir ou adicionar
 
-# series teste
-series = [
-    Serie("Breaking Bad", 47, 5, 62, 18),
-    Serie("Stranger Things", 50, 4, 34, 14),
-    Serie("Game of Thrones", 55, 8, 73, 18),
-    Serie("The Office", 22, 9, 201, 12),
-    Serie("The Witcher", 60, 3, 24, 16),
-    Serie("Dark", 55, 3, 26, 16),
-    Serie("Sherlock", 90, 4, 13, 14),
-    Serie("Peaky Blinders", 58, 6, 36, 18),
-    Serie("Friends", 23, 10, 236, 12),
-    Serie("The Boys", 60, 4, 32, 18)
-]
+def lista_filmes():
+    # filmes teste
+    filmes = [
+        Filme("O Grande Truque", 130, "Christopher Nolan", 14),
+        Filme("A Origem", 148, "Christopher Nolan", 14),
+        Filme("Gladiador", 155, "Ridley Scott", 16),
+        Filme("Forrest Gump", 142, "Robert Zemeckis", 12),
+        Filme("O Resgate do Soldado Ryan", 169, "Steven Spielberg", 16),
+        Filme("O Senhor dos Anéis: A Sociedade do Anel", 178, "Peter Jackson", 12),
+        Filme("O Poderoso Chefão", 175, "Francis Ford Coppola", 18),
+        Filme("Bastardos Inglórios", 153, "Quentin Tarantino", 18),
+        Filme("Matrix", 136, "Lana e Lilly Wachowski", 16),
+        Filme("O Lobo de Wall Street", 180, "Martin Scorsese", 18)
+    ]
+    return choice(filmes)
 
-user = Usuario('Victor', 'jv191207@gmail.com')
+
+def lista_series():
+    # series teste
+    series = [
+        Serie("Breaking Bad", 47, 5, 62, 18),
+        Serie("Stranger Things", 50, 4, 34, 14),
+        Serie("Game of Thrones", 55, 8, 73, 18),
+        Serie("The Office", 22, 9, 201, 12),
+        Serie("The Witcher", 60, 3, 24, 16),
+        Serie("Dark", 55, 3, 26, 16),
+        Serie("Sherlock", 90, 4, 13, 14),
+        Serie("Peaky Blinders", 58, 6, 36, 18),
+        Serie("Friends", 23, 10, 236, 12),
+        Serie("The Boys", 60, 4, 32, 18)
+    ]
+    return choice(series)
+
+
+
