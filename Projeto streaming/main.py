@@ -1,6 +1,5 @@
-from classes import Usuario, lista_filmes, lista_series, Filme, Serie
+from classes import lista_filmes, lista_series
 from interface import menu, menu_cadastro, serie_ou_filme
-from time import sleep
 
 usuario_cadastrado = menu_cadastro()
 
