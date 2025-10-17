@@ -14,7 +14,7 @@ class Usuario:
     
     def to_dict(self):
         # retorna o objeto na sintaxe do JSON
-        return {'nome': self.nome, 'email': self.email, 'senha': self.senha}
+        return {'nome': self.nome, 'email': self.__email, 'senha': self.__senha}
     
     @property
     def exibir_info(self):

@@ -1,6 +1,7 @@
 import json
 import os
-from models_Usuario import Usuario
+from models.models_Usuario import Usuario
+from time import sleep
 
 class GerenciarUsuarios:
     
@@ -14,6 +15,7 @@ class GerenciarUsuarios:
             # se o arquivo já existe, abre e carrega os dados do JSON
             with open(self.arquivo_usuarios, 'r', encoding='utf-8') as arquivo_usuarios:
                 self.usuarios = json.load(arquivo_usuarios)
+                return True
         
         # tratamento de erros     
         except FileNotFoundError as exc:
@@ -21,15 +23,22 @@ class GerenciarUsuarios:
             # cria o arquivo caso o mesmo não exista
             if (resp := input('Deseja criar o arquivo?: ')).upper().strip() == 'S':
                 with open(self.arquivo_usuarios, 'x') as arquivo:
+                    print('Criando arquivo...')
+                    sleep(1.5)
                     print('Arquivo criado com sucesso')
+                    return True
+            else:
+                return False
         
         except json.decoder.JSONDecodeError as exc:
             # trata o erro ao tentar abrir um JSON vazio
             print(f'O arquivo JSON está vazio: {exc}')
             print('Consertando...')
+            sleep(1.5)
             with open(self.arquivo_usuarios, 'w') as arquivo_usuarios:
                 # insere um par de colchetes no arquivo para evitar o erro
                 arquivo_usuarios.write(f'{[]}')
+                return True
       
     def salvar_usuarios(self):
         try:
@@ -42,5 +51,5 @@ class GerenciarUsuarios:
         obj_usuario = Usuario(nome=nome, email=email, senha=senha)
         # adiciona os dados do usuario a lista de usuarios
         # to_dict transforma o objeto em dicionário
-        self.usuarios.append(obj_usuario.to_dict()) 
-    
+        self.usuarios.append(obj_usuario.to_dict())
+        self.salvar_usuarios()
