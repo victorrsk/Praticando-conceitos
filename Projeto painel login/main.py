@@ -22,5 +22,14 @@ if usuarios_carregados:
                 gerenciar_usuarios.cadastrar(nome, email, senha)
                 print('Usuario cadastrado com sucesso!')
             else:
-                print('Deu merda')
-                
+                print('Usuário não cadastrado')
+        
+        elif resp == '2':
+            # TODO
+            pass
+        elif resp == '3':
+            print('Finalizando programa')
+            break
+        
+        else:
+            print('Opção inválida')
