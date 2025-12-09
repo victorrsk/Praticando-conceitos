@@ -14,6 +14,6 @@ class Pokemon(Base):
     # o autoincrement é setado true quando esses dois parâmetros compõem uma mesma coluna
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     
-    name: Mapped[str] = mapped_column(String)
+    name: Mapped[str] = mapped_column(String, unique=True)
 
 Base.metadata.create_all(engine)
